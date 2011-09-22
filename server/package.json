@@ -1,0 +1,7 @@
+{
+  "name": "slidex",
+  "version": "0.0.1",
+  "dependencies": {
+    "choreographer": "0.2.3a"
+  }
+}
