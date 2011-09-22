@@ -87,12 +87,12 @@ a:hover { color: #036; }
 */
 
 body.bg   { 
-		/*
+		
 	 background: url(../images/bg.jpg) no-repeat center center fixed; 
     -webkit-background-size: cover;
     -moz-background-size: cover;
     background-size: cover;
-*/
+
 }
 
 a img { border: none; }
@@ -113,7 +113,7 @@ img { width:100%; }
   border-right:1px solid #000;
   border-left:1px solid #000;
   background:rgba(0,0,0,0.8);	
-  z-index:2000;
+  z-index:200;
 }
 
 #logo{ 
@@ -180,8 +180,9 @@ img { width:100%; }
   padding:45px 0;
 }
 
-#portfolio {
-  margin: 0 30px;
+#wall {
+  margin: 0;
+  margin-left: 30px;
   padding: 10px;
   overflow:hidden;
   position:relative	
@@ -193,10 +194,10 @@ img { width:100%; }
   min-width: 160px;
   margin: 1em 5px 5px; 
   background-color: #fff;  
-  border:7px solid #fff;
-  -webkit-box-shadow:0 1px 4px rgba(0, 0, 0, 0.4);
-  -moz-box-shadow:0 1px 4px rgba(0, 0, 0, 0.4);
-  box-shadow:0 1px 4px rgba(0, 0, 0, 0.4);
+  border: 10px solid #fff;
+  -webkit-box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.8);
+    -moz-box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.8);
+         box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.8);
 }
 
 	.box:before,
@@ -218,9 +219,9 @@ img { width:100%; }
   .box:hover {
     background:#ddd;
     border-color:#ddd;
-    -webkit-box-shadow:0 1px 5px rgba(0, 0, 0, 0.7);
-    -moz-box-shadow:0 1px 5px rgba(0, 0, 0, 0.7);
-    box-shadow:0 1px 5px rgba(0, 0, 0, 0.7);    
+  -webkit-box-shadow: 0px 2px 6px rgba(0, 0, 0, 1);
+    -moz-box-shadow: 0px 2px 6px rgba(0, 0, 0, 1);
+         box-shadow: 0px 2px 6px rgba(0, 0, 0, 1);
   }
 
   .content {
@@ -228,42 +229,27 @@ img { width:100%; }
   	position: relative;	
   }
 
-  .box h2 { 
-    margin-top: 0.15em; 
-    font-size: 1.5em;
+  .description {
+    font-size: 90%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
+  .owner {
+    font-size: 80%;
+    color: #999;
+  }
 
-.description {
-  position:absolute;
-  bottom: 12px;
-  left: 0;
-  display: block;
-  width: 100%;
-  padding: 5px;
-  margin-bottom: -9px;
-  background:rgba(0,0,0,0.8); 
-  color: #DFE1E1;
-  text-shadow: black 1px 1px 0;
-}
-.description h5 {
-  font-size:16px;
-  margin:0 5px;
-  line-height:1em;
-}
+  .box a { 
+    color: #999;
+    text-decoration: none; 
+    outline : none; 
+  }
 
-.description span {
-  font-size:10px;
-  display:block;
-  color:#FFF;
-}
-
-.description p {
-  padding:0;
-  font-size:10px;
-  margin: 4px 10px 0;
-  line-height:1.2em;
-}
+  .box a:hover {
+    color: #777;
+  }
 
 
 /**** Transitions ****/
@@ -297,14 +283,14 @@ img { width:100%; }
   width: 100%; 
   height: 100%; 
   position: fixed; 
-  z-index: 999; 
-  background: rgba(0, 0, 0, 1);
+  z-index: 99996; 
+  background: rgba(0, 0, 0, 0.9);
 }
 
   #loading img {
     position: absolute; 
-    width: 48px; 
-    height: 48px; 
+    width: 160px; 
+    height: 24px; 
     top: 50%; 
     left: 50%; 
     margin: -16px 0 0 -68px;
@@ -312,13 +298,13 @@ img { width:100%; }
 
 
 #overlay {
-  width:100%; 
-  height: 100%; 
   position: fixed; 
   top:0; 
   left: 0; 
-  z-index: 999; 
-  background: rgba(0,0,0,.4);  
+  width: 100%; 
+  height: 100%;   
+  z-index: 99997; 
+  background: rgba(0,0,0,0.6);  
   display: none;
 }
 
@@ -330,8 +316,8 @@ img { width:100%; }
   border: 1px solid #000;  
   background: #111;
   background: rgba(0,0,0,.9);
-  z-index: 2000; 
-  padding: 20px 20px 20px 55px; 
+  z-index: 99998; 
+  padding: 20px 55px 20px 20px; 
   display: none; 
   color: #fff;
   clear: both;
@@ -342,7 +328,32 @@ img { width:100%; }
   border-radius: 6px / 5px;  
 }
 
-#about-dlg {}
+
+.popup-dlg h1 {
+    padding:0 0 0.8em 0;
+    text-transform:uppercase;
+    font-size:1.2em;
+}
+
+.scroll-pane {
+  overflow: auto;
+}
+.para h3{
+    font-weight:normal;
+    font-size:1.1em;
+    padding:0 0 0.8em 0;
+}
+.para p {
+    line-height:1.5em;
+    padding-bottom:10px;
+}
+
+.divider{
+    float:left;
+    width:90%;
+    border-bottom:1px dashed #ddd;
+    margin:5px 20px 0 20px;
+}
 
 /**** copying pirobox close style ***/
 
@@ -355,11 +366,50 @@ img { width:100%; }
   width:35px;
   background:url(css_pirobox/close_btn.png) no-repeat;
   cursor:pointer;
-  z-index:100006;
+  z-index:100001;
 }
 .close:hover {
   background:url(css_pirobox/close_btn_h.png) no-repeat;
 }  
+
+
+a.zoom span {
+  display:none;
+  position: absolute;
+  right:4px;
+  bottom:7px;
+  background:url(../images/magnify.png) no-repeat;
+  width:23px;
+  height:22px;
+  display: none;
+}
+
+
+.jScrollPaneContainer { position: relative; overflow: hidden; z-index: 1; }
+.jScrollPaneTrack {
+  position: absolute;
+  cursor: pointer;
+  right: 0;
+  top: 0;
+  height: 100%;
+  background: #000;
+  -moz-border-radius: 8px;
+   -webkit-border-radius: 8px; 
+   border-radius: 8px;
+  z-index: 400;
+}
+.jScrollPaneDrag {
+  position: absolute;
+  background: #aaa;
+  cursor:pointer;
+  overflow: hidden;
+  -moz-border-radius: 8px;
+   -webkit-border-radius: 8px; 
+   border-radius: 8px;
+}
+.jScrollPaneDragTop { position: absolute; top: 0; left: 0; overflow: hidden; }
+.jScrollPaneDragBottom { position: absolute; bottom: 0; left: 0; overflow: hidden; }
+
 
 
 /**----------------------------------------**/
