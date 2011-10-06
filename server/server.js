@@ -15,7 +15,7 @@ var sys = require('sys'),
     utils = require('./utils'),
     router = require('choreographer').router();
 
-var API_KEY = '2c0e6e85e151c48a63c918bae3406739';
+var API_KEY = 'xxx_flickr_api_key_xxxx';
 
 router.get('/search/*', function(req, res, term) {
 
