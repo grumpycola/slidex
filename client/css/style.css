@@ -87,16 +87,18 @@ a:hover { color: #036; }
 */
 
 body.bg   { 
-		
-	 background: url(../images/bg.jpg) no-repeat center center fixed; 
+	 /*background: url(../images/bg/water-lg.jpg) no-repeat center center fixed; */
+   background: #000;
     -webkit-background-size: cover;
-    -moz-background-size: cover;
-    background-size: cover;
+       -moz-background-size: cover;
+            background-size: cover;
 
 }
 
 a img { border: none; }
 img { width:100%; }
+.clear { clear:both; }
+
 
 /**** header ****/
 
@@ -107,8 +109,8 @@ img { width:100%; }
   width:100%; 
   height:42px; 
   -webkit-box-shadow:0px 0px 4px #000;
-  -moz-box-shadow:0px 0px 4px #000;
-  box-shadow:0px 0px 4px #000;
+     -moz-box-shadow:0px 0px 4px #000;
+          box-shadow:0px 0px 4px #000;
   border-bottom:1px solid #000;
   border-right:1px solid #000;
   border-left:1px solid #000;
@@ -131,28 +133,6 @@ img { width:100%; }
   }
 
 
-#nav {
-    float: right;
-    position: relative;
-    display: inline-block;
-    margin: 7px 10px;
-    padding-right: 20px;
-}
-#menu { list-style:none; position:relative; z-index: 400;}
-#menu > li {list-style:none;   position:relative; display:inline-block;}
-#menu > li:hover {background-color: #111;}
-
-.popup-btn {
-  color: #fff; 
-  font-size: 12px; 
-  padding: 5px;
-  font-size: 1.2em; 
-  cursor: pointer;
-  float: right;
-  text-shadow:1px 1px 1px rgba(0, 0, 0, 0.2);
-  font-weight: bold;  
-}
-
 #search { 
   width: 220px;
   display:inline-block; 
@@ -173,12 +153,124 @@ img { width:100%; }
     color:#999; 
   }
 
-/**** Main related elements ****/
+/**** navigation ****/
 
-#main {
-  margin:0;
-  padding:45px 0;
+#nav-main { 
+    float: right;
+    position: relative;
+    display: inline-block;
+    margin: 6px 10px;
 }
+#nav-main ul li {
+    float:left;
+    padding:0;
+    display:block;
+    background:none;
+}
+#nav-main ul li a {
+  display:block;
+  color: #fff; 
+  font-size: 12px; 
+  padding: 5px;
+  font-size: 1.2em; 
+  cursor: pointer;
+  float: right;
+  font-weight: bold;  
+  text-decoration:none;
+}
+
+#nav-main #nav-main-navigation {
+  float:left;
+  font-size:108%;
+  text-transform:uppercase;
+}
+#nav-main #nav-main-navigation li {
+  padding:0 10px;
+  margin-bottom:0;
+  position:relative;
+  border-right:1px solid;
+}
+#nav-main #nav-main-navigation li:last-child { border:none; }
+#nav-main #nav-main-navigation li .nav-main-subnav {
+  padding-right:15px;
+}
+#nav-main #nav-main-navigation li a { color:#a6a6a6; }
+#nav-main #nav-main-navigation li a:hover, 
+#nav-main #nav-main-navigation li a.active { 
+  color:#f2f2f2;
+}
+
+#nav-sub {
+  height: 220px;
+  display: block;
+  overflow: hidden;
+  clear: both;
+  -webkit-box-shadow:0px 0px 4px #000;
+     -moz-box-shadow:0px 0px 4px #000;
+          box-shadow:0px 0px 4px #000;
+  border-bottom:1px solid #000;
+  border-right:1px solid #000;
+  border-left:1px solid #000;
+  background:rgba(0,0,0,0.8);   
+}
+
+  #nav-sub .menu-fit { margin-left:245px; }
+
+  #nav-sub .submenu { height: 220px; overflow: hidden; }
+
+.submenu .submenu-content {
+  min-width: 120px;
+  padding-top: 20px;
+  display: block;
+  margin-left: 20%;
+}
+  .submenu form {
+    margin: 0;
+  }
+    .submenu form label { font-weight: bold; color: #F2F2F2; }
+    .submenu form dt {
+      width: auto;
+      right: 125px;
+      text-align: left;
+      margin: 15px 0 5px;
+      clear: both;
+    }
+
+    .submenu form dd {
+      clear: both;
+      position: static;
+      top: -21px;
+      left: 165px;
+    }
+
+/**** background image cell ****/
+
+.bgimage {
+  height: 40px;
+  width: 40px;
+  border: 1px solid #CCC;
+  float: left;
+  margin: 3px;
+  cursor: pointer;
+}
+
+#brick   { background: url(../images/bg/brick.jpg) center center;  }
+#cloud   { background: url(../images/bg/cloud.jpg) center center; }
+#electro { background: url(../images/bg/electro.jpg) center center;  }
+#glass   { background: url(../images/bg/glass.jpg) center center;  }
+#glass2  { background: url(../images/bg/glass2.jpg) center center;  }
+#grunge  { background: url(../images/bg/grunge.jpg) center center;  }
+#light   { background: url(../images/bg/light.jpg) center center;  }
+#light3  { background: url(../images/bg/light3.jpg) center center;  }
+#paper   { background: url(../images/bg/paper.jpg) center center; }
+#stucco  { background: url(../images/bg/stucco.jpg) center center;  }
+#water   { background: url(../images/bg/water.jpg) center center;  }
+#wood    { background: url(../images/bg/wood.jpg) center center; }
+
+
+/**** main ****/
+
+#main { margin:0; padding:45px 0; }
 
 #wall {
   margin: 0;
@@ -196,8 +288,8 @@ img { width:100%; }
   background-color: #fff;  
   border: 10px solid #fff;
   -webkit-box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.8);
-    -moz-box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.8);
-         box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.8);
+     -moz-box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.8);
+          box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.8);
 }
 
 	.box:before,
@@ -213,15 +305,15 @@ img { width:100%; }
     left:10px;
     right:10px;
     -moz-border-radius:100px / 10px;
-    border-radius:100px / 10px;
+         border-radius:100px / 10px;
   } 
 
   .box:hover {
     background:#ddd;
     border-color:#ddd;
   -webkit-box-shadow: 0px 2px 6px rgba(0, 0, 0, 1);
-    -moz-box-shadow: 0px 2px 6px rgba(0, 0, 0, 1);
-         box-shadow: 0px 2px 6px rgba(0, 0, 0, 1);
+     -moz-box-shadow: 0px 2px 6px rgba(0, 0, 0, 1);
+          box-shadow: 0px 2px 6px rgba(0, 0, 0, 1);
   }
 
   .content {
@@ -252,7 +344,7 @@ img { width:100%; }
   }
 
 
-/**** Transitions ****/
+/**** masonry transitions ****/
 
 .masonry,
 .masonry .masonry-brick {
@@ -277,7 +369,7 @@ img { width:100%; }
 }
 
 
-/**** Loading ****/
+/**** loading ****/
 
 #loading {
   width: 100%; 
@@ -296,6 +388,7 @@ img { width:100%; }
     margin: -16px 0 0 -68px;
   }
 
+/**** dialog box elements ****/
 
 #overlay {
   position: fixed; 
@@ -314,46 +407,49 @@ img { width:100%; }
   margin-left: -200px; 
   top: 50%; 
   border: 1px solid #000;  
-  background: #111;
   background: rgba(0,0,0,.9);
   z-index: 99998; 
   padding: 20px 55px 20px 20px; 
   display: none; 
   color: #fff;
   clear: both;
-  -webkit-box-shadow: 0px 3px 5px rgba(0,0,0,.3);
-  -moz-box-shadow: 0px 3px 5px rgba(0,0,0,.3);
-  box-shadow: 0px 3px 5px rgba(0,0,0,.3);  
+  -webkit-box-shadow: 0 4px 10px rgba(0,0,0,.3);
+     -moz-box-shadow: 0 4px 10px rgba(0,0,0,.3);
+          box-shadow: 0 4px 10px rgba(0,0,0,.3);  
   -moz-border-radius: 6px / 5px;
-  border-radius: 6px / 5px;  
+       border-radius: 6px / 5px;  
 }
 
+  .popup-dlg h1 {
+      padding:0 0 0.8em 0;
+      text-transform:uppercase;
+      font-size:1.2em;
+  }
 
-.popup-dlg h1 {
-    padding:0 0 0.8em 0;
-    text-transform:uppercase;
-    font-size:1.2em;
-}
+  .scroll-pane {
+    overflow: auto;
+    font-family: "Trebuchet MS", Trebuchet, Verdana, Sans-Serif;
+    font-size:13px;
+  }
 
-.scroll-pane {
-  overflow: auto;
-}
-.para h3{
-    font-weight:normal;
-    font-size:1.1em;
-    padding:0 0 0.8em 0;
-}
-.para p {
-    line-height:1.5em;
-    padding-bottom:10px;
-}
+  .para h3{
+      font-weight:bold;
+      font-size:1.1em;
+      padding:0 0 0.8em 0;
+  }
+  .para p {
+      line-height:1.5em;
+      margin-left: 0;
+      padding-bottom:10px;
+      font-size:10pt;
+  }
+  .para p.small { font-size:85%; }
 
-.divider{
-    float:left;
-    width:90%;
-    border-bottom:1px dashed #ddd;
-    margin:5px 20px 0 20px;
-}
+  .divider{
+      clear:both;
+      margin:5px 20px 0 20px;
+  }
+
 
 /**** copying pirobox close style ***/
 
@@ -368,10 +464,9 @@ img { width:100%; }
   cursor:pointer;
   z-index:100001;
 }
-.close:hover {
-  background:url(css_pirobox/close_btn_h.png) no-repeat;
-}  
-
+  .close:hover {
+    background:url(css_pirobox/close_btn_h.png) no-repeat;
+  }  
 
 a.zoom span {
   display:none;
@@ -384,31 +479,11 @@ a.zoom span {
   display: none;
 }
 
+/**** override toTop background color ****/
 
-.jScrollPaneContainer { position: relative; overflow: hidden; z-index: 1; }
-.jScrollPaneTrack {
-  position: absolute;
-  cursor: pointer;
-  right: 0;
-  top: 0;
-  height: 100%;
-  background: #000;
-  -moz-border-radius: 8px;
-   -webkit-border-radius: 8px; 
-   border-radius: 8px;
-  z-index: 400;
+#toTop, #toTopHover {
+  background-color: rgba(0,0,0,0.8);
 }
-.jScrollPaneDrag {
-  position: absolute;
-  background: #aaa;
-  cursor:pointer;
-  overflow: hidden;
-  -moz-border-radius: 8px;
-   -webkit-border-radius: 8px; 
-   border-radius: 8px;
-}
-.jScrollPaneDragTop { position: absolute; top: 0; left: 0; overflow: hidden; }
-.jScrollPaneDragBottom { position: absolute; bottom: 0; left: 0; overflow: hidden; }
 
 
 

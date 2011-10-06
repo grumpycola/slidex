@@ -2,7 +2,7 @@
  * views.js
  * http://mobile.rdacorp.com/
  *
- * Copyright (c) 2011 eka renardi
+ * Copyright (c) 2011 eka[dot]renardi[at]rdacorp[dot]com
  * Dual licensed under the MIT and GPL licenses.
  */
 
@@ -29,44 +29,32 @@ App.Views.BaseDialog = Backbone.View.extend({
 	initialize: function() {
 		this.el = $(this.el);
 		this.el.hide();
-
-		var self = this;
-		$('#overlay').click( function() {
-			self.hide();
-		})
-	},
-
-	show: function( callback ) {
-		var dh = $(window).height();
-
-		this.isShown = true;
-		this.overlay.css('height', dh + 'px');
-		this.overlay.fadeIn(100);
-		this.el.fadeIn(300, callback );
 	},
 
 	close: function() {
 		this.el.fadeOut();
 		this.overlay.fadeOut(100);
+		this.el.hide();
+		this.overlay.hide();
 		this.isShown = false;
 	},
 
-	hide: function() {
-		this.el.fadeOut();
-		this.overlay.fadeOut();
-		this.isShown = false;
-	},
-
-	resize: function() {
-		
+	render: function( callback ) {
 		var wd = $(window).width(), 
+		    dh = $(window).height(),
 		    el_wd = (wd/2),
 		    el_left = ((wd - el_wd)/2) + 150;		
+
+		this.overlay.css('height', dh + 'px');
 		this.el.css({
 			'width'    : el_wd,
 			'left'     : el_left,
 			'marginTop':-(this.el.outerHeight() / 2)
 		});	    
+
+		this.overlay.show();
+		this.el.fadeIn( callback );
+		this.isShown = true;
 	}
 });
 
@@ -77,37 +65,109 @@ App.Views.AboutDlg = App.Views.BaseDialog.extend({
 
 		var self = this;
 		$(window).resize( function() {
-			self.render();
+			if (!self.isShown) return;
+			self.show();
 		});
 
-		this.render();
+		var eh = $(window).height() - 200;
+		$('.scroll-pane').css('height', eh);					
+
 		return this;
 	},
-	render: function() {
-		this.resize();
-		this.show( function() {
-			var eh = $(window).height() - 200;
-			$('.scroll-pane').css('height', eh);
-	 		$('.scroll-pane').jScrollPane();
-		});
+
+	drawScrollPane: function() {
+		var eh = $(window).height() - 200;
+		$('.scroll-pane').css('height', eh);					
+ 		$('.scroll-pane').jScrollPane();
+	},
+
+	show: function() {
+		this.render( this.drawScrollPane );
 	}
 });
 
+//--------
+App.Views.OptionsView = Backbone.View.extend({
+	el: $('#nav-sub'),
+	events: { 
+		"dblclick .submenu-content" : "render" ,
+		"click .bgimage"            : "setBackground",
+		"change #sort-by"           : "setSortBy"
+	}, 
+	initialize: function( options ) {
+		this.model = options.model;
+		this.el.css( {height:'0'} );
+		$('.submenu').hide();
+		return this;
+	},
 
+	render: function( e ) {
+
+		var status = this.el.height();
+		if(status === 0) {
+			this.show( e );
+		} else {
+			this.hide( e );
+		}
+		return this;
+	},
+
+	show: function( e ) {
+		$(this.el).animate({height:'240px'}).animate({height:'220px'},'300');
+		if (e) {
+			var el = $(e);
+			el.addClass('active');
+			var submenu = '#' + el.attr('id') + '-submenu';
+			$(submenu).siblings('submenu').hide();
+			$(submenu).show();
+		} else {
+			$('.submenu').hide();
+			$('.nav-main-subnav').removeClass('active');
+		}
+		$('#sort-by').prop( 'selectedIndex', this.model.get('sort') );
+	},
+
+	hide: function( e ) {
+		$(this.el).animate({height:'240px'}).animate({height:'0'},'250', function(){
+			$('.submenu').hide();
+			$('.nav-main-subnav').removeClass('active');
+		});
+	},
+
+	setBackground: function( e ) {
+		
+		var img = $(e.target).css('backgroundImage');
+		img = img.substring(0, img.length -5) + '-lg.jpg)';
+		this.model.set( {'background': img} );
+	},
+
+	setSortBy: function() {
+		
+		var val = $('#sort-by').prop('selectedIndex');
+		// if first selection, ignore it
+		if (val == 0) return;
+		// set the model's sort property 
+		this.model.set( {'sort': val} );
+	}
+});
+	
 //--------
 App.Views.PhotoView = Backbone.View.extend({
 	template: $('#box-tmpl'),
 	className: 'box',
 	initialize: function() {
+		
 		// hide/display the zoom box
 		var $el = $(this.el);
 		$el.hover(function(){
 			$(".zoom span", $el).fadeIn();
 		}, function() {
 			$(".zoom span", $el).fadeOut();
-		});		
+		});
 	},
+
 	render: function() {
+		// render this model using mustache template
 		$(this.el).html(this.template.mustache(this.model.attributes));
 		return this;
 	}
@@ -120,25 +180,53 @@ App.Views.GalleryView = Backbone.View.extend({
 	loading: null, 
 	isLoading: false,
 	wall: $('#wall'),
+	optionsData: null, 
+	optionsView: null,
 
 	events: {
 		"submit #search-form" : "submit",
-		"click #about" : "about"	
+		"click #options"      : "doOptions", 
+		"click #about"        : "doAbout"
 	},
 
 	initialize: function() {
-		//this.el.css('display', 'none');
-		this.loading = new App.Views.LoadingOverlay();
-		this.isLoading = true;
-		this.model = new App.Models.Gallery();
 
 		var self = this;
+		
+		// draw the toTop element
+		$().UItoTop();
+
+		// show the loading....
+		this.loading = new App.Views.LoadingOverlay();
+		this.isLoading = true;
+
+		// 
+		this.model = new App.Models.Gallery();
+
+		this.optionsData = new App.Models.OptionsData();
+		// when background attribute is changed, then re-render the background image
+		this.optionsData.bind( 'change:background', this.renderBackground );
+		this.renderBackground( this.optionsData );
+
+		// when sort by attribute is changed, then fetch and redraw gallery
+		this.optionsData.bind( 'change:sort', function() {
+			self.fetch( '', {emptyFirst: true} );
+		});
+
+		// create the options view
+		this.optionsView = new App.Views.OptionsView( { model: this.optionsData } );
+
+		// handle the window.scroll event, perform infinite scrolling
 		$(window).scroll( function() {
 			if ($(window).scrollTop() == $(document).height() - $(window).height()) {
+				// still loading, then ignore the rest
 				if (self.isLoading) {
 					return;
 				}
-				self.loadMore();	
+				// set the next page
+				self.model.set( {'page': $('#page-nav').attr('nextpage')} );
+				// fetch some more
+				self.fetch();
 			} 
 		});
 
@@ -146,32 +234,38 @@ App.Views.GalleryView = Backbone.View.extend({
 	},
 
 	render: function() {
+		// hide the loading...
 		this.loading.hide();
 		this.isLoading = false;
-		//this.el.fadeIn(500);
 	},
 
-	renderGallery: function( options ) {
+	renderWall: function( options ) {
 		
 		var self = this;
 		var $wall = this.wall;
 
+		// empty the wall first?
 		if ( options && options.emptyFirst ) {
-			if ($wall.hasClass('masonry'))  $wall.masonry('destroy');
+			if ($wall.hasClass('masonry')) {
+				$wall.masonry('destroy');	
+			} 
 			$wall.empty();		
 		}
 
+		// get the list of photos, load them up, arrange it into masonry
 		var els = [];
 		var coll = self.model.get('photo');
 		if (coll) {
 
-			coll.forEach(function(item) {
+			coll.forEach( function(item) {
 				var photo = new App.Models.Photo(item);
 				els.push( photo.view.render().el );
 			})
 
-			$wall.masonry({ itemSelector : '.box', columnWidth: 100 });
+			// instantiate masonry
+			$wall.masonry( {itemSelector : '.box', columnWidth: 100} );
 
+			// once all the images are loaded, append it to wall, and instantiate pirobox
 			var $boxes = $(els);
 			$boxes.imagesLoaded( function() {
 				$wall.append( $boxes ).masonry( 'appended', $boxes );
@@ -184,77 +278,64 @@ App.Views.GalleryView = Backbone.View.extend({
 					close_all : '.piro_close,.piro_overlay'
 				});		
 
+				// hide the loading screen and done
 				self.render();	
 			});
 
+			// set the term, nextpage attr, giving cluues for infinite scrolling
 			$('#page-nav').attr({
-				'uri': self.model.queryUri,
+				'term': self.model.term,
 				'nextpage' : (self.model.get('page') + 1) 
 			});
 
 		} else {
 			
+			// hide the loading screen, and done
 			self.render();
 		}
 
 	},
-		
-	interesting: function( date ) {
 
-		if (!date) {
-			var d = new Date();
-  			date = d.getFullYear() + '-' + pad2(d.getMonth()) + '-' + pad2(d.getDate());
+	renderBackground: function( model ) {
+
+		var img = model.get('background');
+		if (img) {
+			$('body').css('background', img + ' no-repeat center center fixed');	
 		}
-
-		var self = this;
-		var uri = "interesting" + '/' + date;		
-		this.model.fetchData( uri, function() {
-			self.renderGallery({ emptyFirst: true });
-		});
+		
 	},
 
-	search: function( query ) {
+
+	fetch: function( term, options ) {
 		
-		var self = this;
-		var uri = "search" + '/' + encodeURIComponent(query);
-		this.model.fetchData( uri, function() {
-			self.renderGallery({ emptyFirst: true });
+		this.loading.show();
+		this.isLoading = true;
+
+		var self = this,
+		    qry = term || $('#page-nav').attr('term'),
+		    sort = this.optionsData.get('sort');
+
+		// fetch from server		    
+		this.model.fetchData( qry, sort, function() {
+			self.renderWall( options );
 		});	
 
 	},
 
-	loadMore: function() {
-
-		this.loading.show();
-		this.isLoading = true;
-
-		var self = this;
-		var uri = $('#page-nav').attr('uri');
-		this.model.set( {'page': $('#page-nav').attr('nextpage')} );
-		this.model.fetchData( uri, function() {
-			self.renderGallery();
-		});
-		
-	},
-
 	submit: function(e) {
-
-		this.loading.show();
-		this.isLoading = true;
 		e.preventDefault();
 
-		var qry = $('input[name=search-input]').val();
-		if (qry) {
-			this.search( qry );
-		} else {
-			this.interesting();
-		}
+		var term = $('input[name=search-input]').val();
+		this.fetch( term, {emptyFirst: true} );
 	},
 
+	doOptions: function( e ) {
+		this.optionsView.render( e.target );
+	},
 
-	about: function() {
+	doAbout: function() {
 		var dlg = new App.Views.AboutDlg();
-		dlg.show();				
-	}	
+		dlg.show();	
+	}
 
 });
