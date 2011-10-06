@@ -2,7 +2,7 @@
  * server.js - main node class
  * http://mobile.rdacorp.com/
  *
- * Copyright (c) 2011 eka renardi
+ * Copyright (c) 2011 eka[dot]renardi[at]rdacorp[dot]com
  * Dual licensed under the MIT and GPL licenses.
  */
 

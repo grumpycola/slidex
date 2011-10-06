@@ -2,7 +2,7 @@
  * flickr.js - flickr api
  * http://mobile.rdacorp.com/
  *
- * Copyright (c) 2011 eka renardi
+ * Copyright (c) 2011 eka[dot]renardi[at]rdacorp[dot]com
  * Dual licensed under the MIT and GPL licenses.
  */
 
@@ -26,7 +26,8 @@ exports.createFlickr = function( api_key ) {
 };
 
 Flickr.prototype._request = function(method, args, callback) {
-  
+
+  // aggregate all params  
   var defaults = {
     method: method,
     format: 'json',
@@ -40,14 +41,17 @@ Flickr.prototype._request = function(method, args, callback) {
   for (var key in args) {
     params.push( key + "=" + args[key] );
   }
+
+  // set the url
   var url = "http://" + this.host + "/services/rest/?" + params.join('&');
-  sys.puts( url );
+  //sys.puts( url );
 
   var headers = {
     'accept' : '*/*',
     'host' : this.host,
   };
 
+  // call api.flickr.com
   var req = http.createClient( this.port, this.host ).request( 'POST', url, headers );
   req.addListener('response', function(response) {
     
@@ -102,16 +106,6 @@ Flickr.prototype.search = function(term, args, callback) {
 
 
 
-Flickr.prototype.getInfo = function(photo_id, secret, callback) {
-  
-  var args = { photo_id: photo_id, secret: secret };
-
-  var req = this._request(
-      'flickr.photos.getInfo', 
-      args, 
-      callback);
-};
-
 
 Flickr.prototype.interestingness = function(date, args, callback) {
 
@@ -125,3 +119,13 @@ Flickr.prototype.interestingness = function(date, args, callback) {
 };
 
 
+
+Flickr.prototype.getInfo = function(photo_id, secret, callback) {
+  
+  var args = { photo_id: photo_id, secret: secret };
+
+  var req = this._request(
+      'flickr.photos.getInfo', 
+      args, 
+      callback);
+};
