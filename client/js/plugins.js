@@ -18,3 +18,12 @@ window.log = function() {
 pad2 = function(number) {
 	return (number < 10 ? '0' : '') + number;
 };
+
+isMobile =  function() {
+	var r = navigator.userAgent.match(/Android/i) ||
+			navigator.userAgent.match(/webOS/i) ||
+			navigator.userAgent.match(/iPhone/i) ||
+			navigator.userAgent.match(/iPod/i) || 
+			navigator.userAgent.match(/iPad/i);
+	return r;
+};
