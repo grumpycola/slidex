@@ -69,14 +69,14 @@ App.Views.AboutDlg = App.Views.BaseDialog.extend({
 			self.show();
 		});
 
-		var eh = $(window).height() - 200;
+		var eh = $(window).height() - (isMobile() ? 100 : 200);
 		$('.scroll-pane').css('height', eh);					
 
 		return this;
 	},
 
 	drawScrollPane: function() {
-		var eh = $(window).height() - 200;
+		var eh = $(window).height() - (isMobile() ? 100 : 200);
 		$('.scroll-pane').css('height', eh);					
  		$('.scroll-pane').jScrollPane();
 	},
@@ -193,8 +193,10 @@ App.Views.GalleryView = Backbone.View.extend({
 
 		var self = this;
 		
-		// draw the toTop element
-		$().UItoTop();
+		// draw the toTop element, only for pc, hide it for mobile devices
+		if (!isMobile()) {
+			$().UItoTop();
+		}
 
 		// show the loading....
 		this.loading = new App.Views.LoadingOverlay();
@@ -300,16 +302,26 @@ App.Views.GalleryView = Backbone.View.extend({
 
 		var img = model.get('background');
 		if (img) {
-			$('body').css('background', img + ' no-repeat center center fixed');	
+			if (isMobile()) {
+				$('.bg').css({
+					'background': img + ' repeat center top fixed', 
+					'-webkit-background-size': '3504px 2336px;'
+				});
+			} else {
+				$('.bg').css('background', img + ' no-repeat center center fixed');	
+			}
+			var param = isMobile() ? ' repeat center top' : ' no-repeat center center fixed';
 		}
 		
 	},
 
-
 	fetch: function( term, options ) {
-		
-		this.loading.show();
-		this.isLoading = true;
+
+		// hide loading screen for mobile devices, as the viewport is mostly invisible to user
+		if (!isMobile()) {
+			this.loading.show();
+			this.isLoading = true;
+		}
 
 		var self = this,
 		    qry = term || $('#page-nav').attr('term'),
